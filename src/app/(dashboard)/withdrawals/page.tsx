@@ -73,7 +73,10 @@ function RowSkeleton() {
 
 function TxnRow({ txn }: { txn: PopulatedTransaction }) {
   return (
-    <div className="flex items-center gap-3 py-3.5 border-b border-border-subtle last:border-0">
+    <Link
+      href={`/transactions/${txn._id}`}
+      className="flex items-center gap-3 py-3.5 border-b border-border-subtle last:border-0 transition-colors hover:bg-[rgba(255,255,255,0.02)] cursor-pointer"
+    >
       {/* Icon */}
       <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 bg-[rgba(245,158,11,0.08)] border border-[rgba(245,158,11,0.15)]">
         <ArrowUpFromLine className="w-4 h-4 text-warning" />
@@ -99,7 +102,7 @@ function TxnRow({ txn }: { txn: PopulatedTransaction }) {
       <div className="flex flex-col items-end gap-1.5 shrink-0">
         <StatusBadge status={txn.status as 'pending' | 'completed' | 'failed' | 'disputed'} />
       </div>
-    </div>
+    </Link>
   )
 }
 

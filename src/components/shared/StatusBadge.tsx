@@ -22,8 +22,10 @@ export type StatusValue =
   | 'inactive'
   // Transaction
   | 'completed'
+  | 'processing'
   | 'failed'
   | 'disputed'
+  | 'cancelled'
   // UTR
   | 'verified'
   | 'rejected'
@@ -66,6 +68,16 @@ const STATUS_MAP: Record<StatusValue, StatusConfig> = {
     label:   'Disputed',
     textVar: '--status-disputed-text',    // orange
     bgVar:   '--status-disputed-bg',
+  },
+  processing: {
+    label:   'Processing',
+    textVar: '--status-pending-text',     // amber
+    bgVar:   '--status-pending-bg',
+  },
+  cancelled: {
+    label:   'Cancelled',
+    textVar: '--text-muted',             // muted grey
+    bgVar:   '--bg-input',
   },
   // ── UTR ─────────────────────────────────────────────────────────────────
   verified: {

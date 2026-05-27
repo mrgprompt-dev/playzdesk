@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { TrendingUp } from 'lucide-react'
 import { apiClient } from '@/lib/axios'
-import type { CommissionDetailsResponse, CommissionDetail } from '@/app/api/commission/details/route'
+import type { CommissionDetailsResponse, CommissionDetail } from '@/types'
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 

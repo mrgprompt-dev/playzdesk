@@ -1,6 +1,6 @@
 # PayzDesk — Progress Summary
 
-**Last updated:** 2026-05-27 (Referral ✅, Commission ✅)
+**Last updated:** 2026-05-27 (Phase 2 ✅ COMPLETE)
 **Stack:** Next.js 16 · TypeScript · Tailwind v4 · App Router
 
 ---
@@ -48,27 +48,27 @@ A feature-complete web replica of the SuperPayz Android APK, rebranded as PayzDe
 
 All 15 core routes built: auth, dashboard, deposits, withdrawals, banks, UTR, settings, profile.
 
-### Phase 2 — Earnings & Reporting (CURRENT TARGET)
+### Phase 2 — Earnings & Reporting ✅ COMPLETE
 
-Build these routes in order:
+All 13 routes built:
 
 | Priority | Route                       | Screen                    | Status |
 | -------- | --------------------------- | ------------------------- | ------ |
 | 1        | `/referral`                 | Refer & Earn              | ✅     |
 | 2        | `/commission/performance`   | Performance Commission    | ✅     |
 | 3        | `/commission/details`       | Commission Details        | ✅     |
-| 4        | `/transactions/:id`         | Transaction Detail        | ⬜     |
-| 5        | `/security-deposits`        | Security Deposits list    | ⬜     |
-| 6        | `/security-deposits/add`    | Add Security Deposit      | ⬜     |
-| 7        | `/security-deposits/:id`    | Security Deposit Detail   | ⬜     |
-| 8        | `/security-withdrawals`     | Security Withdrawals list | ⬜     |
-| 9        | `/security-withdrawals/add` | Add Security Withdrawal   | ⬜     |
-| 10       | `/reports/finance`          | Finance Report            | ⬜     |
-| 11       | `/reports/finance/info`     | Finance Report Info       | ⬜     |
-| 12       | `/reports/adjustments`      | Adjustment Transactions   | ⬜     |
-| 13       | `/tiers`                    | Tier Benefits             | ⬜     |
+| 4        | `/transactions/:id`         | Transaction Detail        | ✅     |
+| 5        | `/security-deposits`        | Security Deposits list    | ✅     |
+| 6        | `/security-deposits/add`    | Add Security Deposit      | ✅     |
+| 7        | `/security-deposits/:id`    | Security Deposit Detail   | ✅     |
+| 8        | `/security-withdrawals`     | Security Withdrawals list | ✅     |
+| 9        | `/security-withdrawals/add` | Add Security Withdrawal   | ✅     |
+| 10       | `/reports/finance`          | Finance Report            | ✅     |
+| 11       | `/reports/finance/info`     | Finance Report Info       | ✅     |
+| 12       | `/reports/adjustments`      | Adjustment Transactions   | ✅     |
+| 13       | `/tiers`                    | Tier Benefits             | ✅     |
 
-### Phase 3 — Real-time & Support (AFTER PHASE 2)
+### Phase 3 — Real-time & Support (CURRENT TARGET)
 
 | Priority | Route              | Screen                        | Status |
 | -------- | ------------------ | ----------------------------- | ------ |
@@ -85,7 +85,7 @@ Build these routes in order:
 ### Bootstrap & deps
 
 - Next.js project with TypeScript, Tailwind, App Router
-- Packages: mongoose, axios, zustand, TanStack Query, react-hook-form, zod, jsonwebtoken, bcryptjs, ioredis, pusher, lucide-react, clsx, tailwind-merge
+- Packages: mongoose, axios, zustand, TanStack Query, react-hook-form, zod, jsonwebtoken, bcryptjs, upstash Redis, pusher, lucide-react, clsx, tailwind-merge
 
 ### Project structure
 
@@ -163,6 +163,20 @@ Build these routes in order:
 - OTP: peekOTP / consumeOTP split (no premature burn)
 - Privacy: generic OTP success strings for login/reset
 
+### Phase 2: Referral & Commission ✅
+
+- Models: ReferralCycle, ReferralCommission, PerformanceCommission, Adjustment
+- API: referral stats (GET), performance commission (GET), commission details (GET), transaction detail (GET by ID)
+- API: security deposits (GET list, POST create), security withdrawals (GET list, POST create)
+- API: finance report (GET, aggregation with date filter), adjustments (GET, type + date filter), tiers (GET, static config + deposit aggregation)
+- Pages: referral (earnings card + cycle + WhatsApp/Share/FAQ + segmented tabs), performance commission (earnings + program cards), commission details (summary + history)
+- Pages: transaction detail (hero card + details + bank info + notes, supports all 4 transaction types)
+- Pages: security deposits list (filter bar + rows), add security deposit form, security withdrawals list, add security withdrawal form
+- Pages: finance report (date filter + net balance + deposits/withdrawals/security breakdown + wallet summary), finance report info (static explanations)
+- Pages: adjustments (FilterBar reuse + summary strip + credit/debit rows), tiers (current tier card + progress bar + tier benefit cards)
+- Types updated: ITransaction now includes all 4 types + 6 statuses + referenceId/notes; ITier, TiersResponse, FinanceReportSummary, IAdjustment, AdjustmentsResponse added
+- All pages use apiClient (axios with token refresh), formatINR/formatDateTime from @/utils
+
 ---
 
 ## Route Checklist
@@ -187,23 +201,23 @@ Build these routes in order:
 | `/utr`                      | ✅      | ✅  |
 | `/utr/create`               | ✅      | ✅  |
 
-### Phase 2 (To Build)
+### Phase 2 (Complete)
 
 | Route                       | Page UI | API |
 | --------------------------- | ------- | --- |
 | `/referral`                 | ✅      | ✅  |
 | `/commission/performance`   | ✅      | ✅  |
 | `/commission/details`       | ✅      | ✅  |
-| `/transactions/:id`         | ⬜      | ✅  |
-| `/security-deposits`        | ⬜      | ⬜  |
-| `/security-deposits/add`    | ⬜      | ⬜  |
-| `/security-deposits/:id`    | ⬜      | ⬜  |
-| `/security-withdrawals`     | ⬜      | ⬜  |
-| `/security-withdrawals/add` | ⬜      | ⬜  |
-| `/reports/finance`          | ⬜      | ⬜  |
-| `/reports/finance/info`     | ⬜      | ⬜  |
-| `/reports/adjustments`      | ⬜      | ⬜  |
-| `/tiers`                    | ⬜      | ⬜  |
+| `/transactions/:id`         | ✅      | ✅  |
+| `/security-deposits`        | ✅      | ✅  |
+| `/security-deposits/add`    | ✅      | ✅  |
+| `/security-deposits/:id`    | ✅      | ✅  |
+| `/security-withdrawals`     | ✅      | ✅  |
+| `/security-withdrawals/add` | ✅      | ✅  |
+| `/reports/finance`          | ✅      | ✅  |
+| `/reports/finance/info`     | ✅      | —   |
+| `/reports/adjustments`      | ✅      | ✅  |
+| `/tiers`                    | ✅      | ✅  |
 
 ### Phase 3 (To Build)
 
@@ -219,16 +233,15 @@ Build these routes in order:
 
 ---
 
-## Data Models Needed for Phase 2
+## Data Models — Phase 2 (All Created ✅)
 
-These models do not exist yet and must be created:
+| Model                    | Fields                                                                  | Used by                       | Status |
+| ------------------------ | ----------------------------------------------------------------------- | ----------------------------- | ------ |
+| `ReferralCycle`          | userId, startDate, endDate, amount, status                              | `/api/referral`               | ✅     |
+| `ReferralCommission`     | referrerId, referredUserId, cycleId, amount                             | `/api/referral`, `/api/commission/details` | ✅ |
+| `PerformanceCommission`  | userId (unique), totalEarned, status, lastReleasedDate, frequencyDays, activePrograms[] | `/api/commission/performance` | ✅ |
+| `Adjustment`             | userId, type (credit/debit), amount, description, referenceId           | `/api/reports/adjustments`    | ✅     |
+| `Transaction` (extended) | Added `security_deposit`/`security_withdrawal` types, `referenceId`, `notes` | Security deposits/withdrawals | ✅ |
 
-| Model                    | Fields                                                                  | Used by                       |
-| ------------------------ | ----------------------------------------------------------------------- | ----------------------------- |
-| `Referral` / user fields | lifetimeEarnings, currentCycle (dates, amount, status), referredUsers[] | `/api/referral`               |
-| `PerformanceCommission`  | totalEarned, status, lastReleasedDate, frequencyDays, activePrograms[]  | `/api/commission/performance` |
-| `SecurityDeposit`        | userId, bankId, amount, status, createdAt                               | `/api/security-deposits`      |
-| `SecurityWithdrawal`     | userId, bankId, amount, status, createdAt                               | `/api/security-withdrawals`   |
-| `Adjustment`             | userId, type, amount, description, createdAt                            | `/api/reports/adjustments`    |
-
-Referral fields (lifetimeEarnings, referralCode, referredBy) already exist on the User model. The cycle and commission records need separate collection(s).
+Referral fields (commissionEarned, referralCode, referredBy) exist on the User model.
+Tiers are static config in `/api/tiers/route.ts` — no DB model needed.

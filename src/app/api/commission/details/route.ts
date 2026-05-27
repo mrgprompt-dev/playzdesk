@@ -3,21 +3,7 @@ import { connectDB } from "@/lib/db";
 import { getAuthUser } from "@/lib/getAuthUser";
 import ReferralCommission from "@/models/ReferralCommission";
 import ReferralCycle from "@/models/ReferralCycle";
-import type { ApiResponse } from "@/types";
-
-export interface CommissionDetail {
-	_id: string;
-	cycleId: string;
-	cycleStart: string;
-	cycleEnd: string;
-	amount: number;
-	createdAt: string;
-}
-
-export interface CommissionDetailsResponse {
-	totalEarned: number;
-	records: CommissionDetail[];
-}
+import type { ApiResponse, CommissionDetail, CommissionDetailsResponse } from "@/types";
 
 // GET /api/commission/details
 // Returns a full breakdown of all referral commission records for the user,
@@ -26,7 +12,7 @@ export async function GET(req: NextRequest) {
 	try {
 		await connectDB();
 
-		const auth = await getAuthUser(req);
+		const auth = getAuthUser(req);
 		if (!auth) {
 			return NextResponse.json<ApiResponse>(
 				{ success: false, message: "Unauthorised" },

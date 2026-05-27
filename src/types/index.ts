@@ -83,14 +83,17 @@ export interface IBankAccount {
 export interface ITransaction {
 	_id: string;
 	userId: string;
-	type: "deposit" | "withdrawal";
+	type: "deposit" | "withdrawal" | "security_deposit" | "security_withdrawal";
 	amount: number;
-	status: "pending" | "completed" | "failed" | "disputed";
+	status: "pending" | "processing" | "completed" | "failed" | "disputed" | "cancelled";
 	bankId?: string;
 	utrNumber?: string;
+	referenceId?: string;
+	notes?: string;
 	createdAt: string;
 	updatedAt: string;
 }
+
 
 // ─── UTR ──────────────────────────────────────────────────────────────────────
 
@@ -170,4 +173,77 @@ export interface IPerformanceCommission {
 	lastReleasedDate: string | null; // ISO string or null
 	frequencyDays: number;
 	activePrograms: IActiveProgram[];
+}
+
+// ─── Commission Details ──────────────────────────────────────────────────────
+
+export interface CommissionDetail {
+	_id: string;
+	cycleId: string;
+	cycleStart: string;
+	cycleEnd: string;
+	amount: number;
+	createdAt: string;
+}
+
+export interface CommissionDetailsResponse {
+	totalEarned: number;
+	records: CommissionDetail[];
+}
+
+// Reports
+
+export interface FinanceReportSummary {
+	totalDeposits: number;
+	totalWithdrawals: number;
+	totalSecurityDeposits: number;
+	totalSecurityWithdrawals: number;
+	netBalance: number;
+	pendingDeposits: number;
+	pendingWithdrawals: number;
+	completedDeposits: number;
+	completedWithdrawals: number;
+	dateFrom: string | null;
+	dateTo: string | null;
+}
+
+export interface IAdjustment {
+	_id: string;
+	type: "credit" | "debit";
+	amount: number;
+	description: string;
+	referenceId?: string;
+	createdAt: string;
+}
+
+export interface AdjustmentsResponse {
+	totalCredit: number;
+	totalDebit: number;
+	net: number;
+	records: IAdjustment[];
+}
+
+// Tiers
+
+export interface ITierBenefit {
+	label: string;
+	value: string;
+}
+
+export interface ITier {
+	id: string;
+	name: string;
+	minDeposit: number;
+	maxWithdrawalPerTxn: number;
+	commissionRate: number;
+	color: string;
+	benefits: ITierBenefit[];
+}
+
+export interface TiersResponse {
+	allTiers: ITier[];
+	currentTier: ITier;
+	nextTier: ITier | null;
+	progressPercent: number;
+	totalCompletedDeposits: number;
 }

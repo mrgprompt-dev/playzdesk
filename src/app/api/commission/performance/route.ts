@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 	try {
 		await connectDB();
 
-		const auth = await getAuthUser(req);
+		const auth = getAuthUser(req);
 		if (!auth) {
 			return NextResponse.json<ApiResponse>(
 				{ success: false, message: "Unauthorised" },

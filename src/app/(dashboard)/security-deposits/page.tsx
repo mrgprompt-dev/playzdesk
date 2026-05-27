@@ -3,9 +3,10 @@
 import { useState, useCallback } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
-import { ArrowDownToLine, Building2 } from 'lucide-react'
+import { Shield, Building2, Plus } from 'lucide-react'
 import { FilterBar, FilterState } from '@/components/shared/FilterBar'
 import { StatusBadge } from '@/components/shared/StatusBadge'
+import { apiClient } from '@/lib/axios'
 import { formatDateTime, formatINR } from '@/utils'
 import type { ITransaction, IBankAccount } from '@/types'
 
@@ -13,6 +14,8 @@ import type { ITransaction, IBankAccount } from '@/types'
 
 interface PopulatedTransaction extends Omit<ITransaction, 'bankId'> {
   bankId?: Pick<IBankAccount, '_id' | 'bankName' | 'accountNumber' | 'ifscCode'> | string | null
+  referenceId?: string
+  notes?: string
 }
 
 function getBankName(txn: PopulatedTransaction): string {
@@ -26,29 +29,26 @@ function getBankSuffix(txn: PopulatedTransaction): string {
   return acct ? ` ••••${acct.slice(-4)}` : ''
 }
 
-// ─── Status options for deposits ─────────────────────────────────────────────
+// ─── Status options ───────────────────────────────────────────────────────────
 
 const STATUS_OPTIONS = [
-  { value: '',           label: 'All'        },
-  { value: 'pending',    label: 'Pending'    },
-  { value: 'completed',  label: 'Completed'  },
-  { value: 'failed',     label: 'Failed'     },
-  { value: 'disputed',   label: 'Disputed'   },
+  { value: '',          label: 'All'       },
+  { value: 'pending',   label: 'Pending'   },
+  { value: 'completed', label: 'Completed' },
+  { value: 'failed',    label: 'Failed'    },
 ]
 
 // ─── Fetch ────────────────────────────────────────────────────────────────────
 
-async function fetchDeposits(filter: FilterState): Promise<PopulatedTransaction[]> {
-  const params = new URLSearchParams({ type: 'deposit' })
+async function fetchSecurityDeposits(filter: FilterState): Promise<PopulatedTransaction[]> {
+  const params = new URLSearchParams()
   if (filter.status)   params.set('status',   filter.status)
   if (filter.search)   params.set('search',   filter.search)
   if (filter.dateFrom) params.set('dateFrom', filter.dateFrom)
   if (filter.dateTo)   params.set('dateTo',   filter.dateTo)
 
-  const res = await fetch(`/api/transactions?${params}`)
-  if (!res.ok) throw new Error('Failed to fetch')
-  const json = await res.json()
-  return json.data ?? []
+  const res = await apiClient.get(`/security-deposits?${params}`)
+  return res.data.data ?? []
 }
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
@@ -78,8 +78,14 @@ function TxnRow({ txn }: { txn: PopulatedTransaction }) {
       className="flex items-center gap-3 py-3.5 border-b border-border-subtle last:border-0 transition-colors hover:bg-[rgba(255,255,255,0.02)] cursor-pointer"
     >
       {/* Icon */}
-      <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 bg-[rgba(59,130,246,0.08)] border border-[rgba(59,130,246,0.15)]">
-        <ArrowDownToLine className="w-4 h-4 text-blue" />
+      <div
+        className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 border"
+        style={{
+          background: 'var(--accent-green-dim)',
+          borderColor: 'rgba(22,163,74,0.15)',
+        }}
+      >
+        <Shield className="w-4 h-4 text-green" />
       </div>
 
       {/* Left */}
@@ -100,12 +106,7 @@ function TxnRow({ txn }: { txn: PopulatedTransaction }) {
 
       {/* Right */}
       <div className="flex flex-col items-end gap-1.5 shrink-0">
-        <StatusBadge status={txn.status as 'pending' | 'completed' | 'failed' | 'disputed'} />
-        {txn.utrNumber && (
-          <p className="text-[10px] text-muted font-mono">
-            {txn.utrNumber}
-          </p>
-        )}
+        <StatusBadge status={txn.status as 'pending' | 'completed' | 'failed'} />
       </div>
     </Link>
   )
@@ -115,12 +116,12 @@ function TxnRow({ txn }: { txn: PopulatedTransaction }) {
 
 const EMPTY_FILTER: FilterState = { status: '', search: '', dateFrom: '', dateTo: '' }
 
-export default function DepositsPage() {
+export default function SecurityDepositsPage() {
   const [filter, setFilter] = useState<FilterState>(EMPTY_FILTER)
 
   const { data: txns = [], isLoading, isError } = useQuery<PopulatedTransaction[]>({
-    queryKey:  ['transactions', 'deposit', filter],
-    queryFn:   () => fetchDeposits(filter),
+    queryKey:  ['security-deposits', filter],
+    queryFn:   () => fetchSecurityDeposits(filter),
     staleTime: 20_000,
   })
 
@@ -133,18 +134,17 @@ export default function DepositsPage() {
 
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-bold text-primary">Deposit Requests</h1>
+        <h1 className="text-lg font-bold text-primary">Security Deposits</h1>
         <Link
-          href="/deposit"
-          className="flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-bold min-h-[44px] touch-manipulation whitespace-nowrap transition-transform active:scale-95"
+          href="/security-deposits/add"
+          className="flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-bold min-h-[44px] touch-manipulation whitespace-nowrap transition-transform active:scale-95 text-white"
           style={{
             background: 'linear-gradient(145deg, var(--accent-green-light), var(--accent-green))',
-            color: '#fff',
             boxShadow: '0 4px 12px var(--accent-green-dim)',
           }}
         >
-          <ArrowDownToLine className="w-4 h-4" />
-          New Deposit
+          <Plus className="w-4 h-4" />
+          Add Deposit
         </Link>
       </div>
 
@@ -153,14 +153,14 @@ export default function DepositsPage() {
         value={filter}
         onChange={handleFilterChange}
         statusOptions={STATUS_OPTIONS}
-        searchPlaceholder="Search UTR or reference…"
+        searchPlaceholder="Search reference…"
       />
 
       {/* Results */}
       <div className="page-card p-0! overflow-hidden">
         {/* Card header */}
         <div className="flex items-center justify-between px-4 py-3.5 border-b border-border-subtle">
-          <p className="section-label mb-0">DEPOSIT REQUESTS</p>
+          <p className="section-label mb-0">SECURITY DEPOSITS</p>
           {!isLoading && !isError && (
             <p className="text-[12px] text-muted">
               {txns.length} {txns.length === 1 ? 'record' : 'records'}
@@ -186,7 +186,7 @@ export default function DepositsPage() {
               <p className="text-[13px] text-muted mt-1">
                 {hasActiveFilter
                   ? 'Please change the date range.'
-                  : 'No deposit requests yet.'}
+                  : 'No security deposits yet.'}
               </p>
             </div>
           )}
