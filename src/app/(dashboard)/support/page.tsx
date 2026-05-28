@@ -65,7 +65,7 @@ export default function SupportPage() {
     <div className="flex flex-col gap-4 animate-[fadeIn_200ms_ease-out]">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center justify-center w-10 h-10 rounded-[10px] bg-(--accent-blue-dim) border border-border-subtle shrink-0">
+        <div className="flex items-center justify-center w-10 h-10 rounded-sm bg-(--accent-blue-dim) border border-border-subtle shrink-0">
           <MessageSquare className="w-4.5 h-4.5 text-blue" />
         </div>
         <div>
@@ -79,7 +79,7 @@ export default function SupportPage() {
         <p className="section-label mb-0">CREATE NEW TICKET</p>
         
         {success && (
-          <div className="flex items-start gap-2 p-3.5 rounded-[14px] text-[13px] font-medium text-green border border-[rgba(16,185,129,0.2)] bg-[rgba(16,185,129,0.08)]">
+          <div className="flex items-start gap-2 p-3.5 rounded-md text-[13px] font-medium text-green border border-[rgba(16,185,129,0.2)] bg-[rgba(16,185,129,0.08)]">
             <CheckCircle2 className="w-4 h-4 shrink-0 mt-px" />
             Your ticket has been submitted successfully. Our team will review it shortly.
           </div>
@@ -116,7 +116,7 @@ export default function SupportPage() {
             placeholder="Provide details about your issue..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="form-input min-h-[120px] resize-y py-3 leading-relaxed"
+            className="form-input min-h-30 resize-y py-3 leading-relaxed"
             maxLength={1000}
           />
         </div>
@@ -138,8 +138,8 @@ export default function SupportPage() {
 
         {loadingTickets ? (
           <div className="flex flex-col gap-2">
-            <div className="skeleton h-[80px] rounded-[16px]" />
-            <div className="skeleton h-[80px] rounded-[16px]" />
+            <div className="skeleton h-20 rounded-2xl" />
+            <div className="skeleton h-20 rounded-2xl" />
           </div>
         ) : ticketsError ? (
           <div className="error-banner">
@@ -166,7 +166,7 @@ export default function SupportPage() {
                     {ticket.status.toUpperCase()}
                   </div>
                 </div>
-                <div className="text-[13px] text-secondary leading-relaxed p-3 bg-bg-secondary rounded-[10px] border border-border-subtle">
+                <div className="text-[13px] text-secondary leading-relaxed p-3 bg-bg-secondary rounded-sm border border-border-subtle">
                   {ticket.message}
                 </div>
               </div>

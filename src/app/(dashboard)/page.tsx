@@ -46,9 +46,9 @@ interface StatCardProps {
 
 function StatCard({ icon: Icon, iconColor, label, value, valueColor }: StatCardProps) {
   return (
-    <div className="rounded-md border border-border bg-card backdrop-blur-md p-[14px] flex flex-col gap-1.5">
+    <div className="rounded-md border border-border bg-card backdrop-blur-md p-3.5 flex flex-col gap-1.5">
       <div className="flex items-center gap-2">
-        <Icon className="h-[14px] w-[14px] shrink-0" style={{ color: iconColor }} />
+        <Icon className="h-3.5 w-3.5 shrink-0" style={{ color: iconColor }} />
         <span className="text-[12px] text-muted leading-tight">{label}</span>
       </div>
       <span
@@ -97,12 +97,12 @@ function QuickLink({ icon: Icon, iconColor, label, href }: QuickLinkProps) {
       style={{ WebkitTapHighlightColor: 'transparent' }}
     >
       <div
-        className="h-[52px] w-[52px] rounded-full flex items-center justify-center transition-transform active:scale-95"
+        className="h-13 w-13 rounded-full flex items-center justify-center transition-transform active:scale-95"
         style={{ background: 'rgba(255,255,255,0.06)' }}
       >
         <Icon className="h-5 w-5" style={{ color: iconColor }} />
       </div>
-      <span className="text-[11px] font-semibold text-secondary text-center leading-tight max-w-[60px]">
+      <span className="text-[11px] font-semibold text-secondary text-center leading-tight max-w-15">
         {label}
       </span>
     </Link>
@@ -415,9 +415,10 @@ export default function DashboardPage() {
       ══════════════════════════════════════════ */}
       <Link
         href="/support"
-        className="flex items-center justify-center gap-2.5 w-full py-4 rounded-full text-[15px] font-bold text-white active:opacity-80 transition-opacity"
+        className="flex items-center justify-center gap-2.5 w-full py-4 rounded-full text-[15px] font-bold text-primary active:opacity-80 transition-opacity"
         style={{
           background: 'linear-gradient(145deg, var(--accent-blue-light), var(--accent-blue))',
+          color:'var(--text-primary)'
         }}
       >
         <Headphones className="h-4 w-4" />

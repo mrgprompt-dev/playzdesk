@@ -121,7 +121,7 @@ function NavGroup({ item, onNavigate }: { item: NavItem; onNavigate?: () => void
           isGroupActive && 'drawer-item-active'
         )}
       >
-        <item.icon className="h-[18px] w-[18px] shrink-0 opacity-80" />
+        <item.icon className="h-4.5 w-4.5 shrink-0 opacity-80" />
         <span className="flex-1">{item.label}</span>
         <ChevronDown
           className={cn(
@@ -168,7 +168,7 @@ function NavLink({ item, onNavigate }: { item: NavItem; onNavigate?: () => void 
       onClick={onNavigate}
       className={cn('drawer-item', isActive && 'drawer-item-active')}
     >
-      <item.icon className="h-[18px] w-[18px] shrink-0 opacity-80" />
+      <item.icon className="h-4.5 w-4.5 shrink-0 opacity-80" />
       <span>{item.label}</span>
     </Link>
   )
@@ -239,7 +239,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           className="drawer-item w-full text-left"
           style={{ color: 'var(--accent-red-light)' }}
         >
-          <LogOut className="h-[18px] w-[18px] shrink-0 opacity-80" />
+          <LogOut className="h-4.5 w-4.5 shrink-0 opacity-80" />
           <span>Logout</span>
         </button>
       </div>
@@ -260,7 +260,7 @@ export function Sidebar() {
     >
       {/* Logo */}
       <div
-        className="flex items-center gap-2.5 px-5 py-[18px]"
+        className="flex items-center gap-2.5 px-5 py-4.5"
         style={{ borderBottom: '1px solid var(--border-subtle)' }}
       >
         <div
@@ -327,12 +327,10 @@ export function MobileHeader() {
           className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold"
           style={{
             background: 'linear-gradient(145deg, var(--accent-blue-light), var(--accent-blue))',
-            boxShadow: '0 4px 10px var(--accent-blue-dim)',
-            color: '#f8fbff',
-            touchAction: 'manipulation',
+            color: 'var(--text-primary)',
           }}
         >
-          <ArrowDownToLine className="h-3.5 w-3.5" style={{ color: '#f8fbff' }} />
+          <ArrowDownToLine className="h-3.5 w-3.5"/>
           Deposit
         </Link>
       </header>
